@@ -16,3 +16,8 @@ npm install
 ```bash
 npx run
 ```
+
+or
+```bash
+npx vite --config myvite.config.js
+```
