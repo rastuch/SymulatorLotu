@@ -5,6 +5,7 @@ import initSky from "./initSky.js";
 import jetControllers from "./jetControllers.js";
 
 import createMountain from "./createMountain.js";
+import initClouds from "./initClouds.js";
 var start_time = Date.now();
 if ( WebGL.isWebGLAvailable() ) {
 
@@ -14,7 +15,7 @@ console.log('dostepny!')
   const warning = WebGL.getWebGLErrorMessage();
   document.getElementById('container').appendChild(warning);
 }
-let jet,position,mountainModel,sky, sun, groundMesh, groundTexture, mixer,cloud;
+let jet,position,mountainModel,sky, sun, mixer;
 
 const scene = new THREE.Scene();
 
@@ -36,24 +37,15 @@ const light = new THREE.DirectionalLight(0xffffff, 10.0);
 light.position.set(3.14, 1, 1);
 scene.add(light);
 
-
-scene.background = new THREE.Color( 0xf2f7ff );
-groundTexture = textureLoader.load( 'src/models/cloudd.png' );
-groundTexture.colorSpace = THREE.SRGBColorSpace;
-const maxAnisotropy = renderer.capabilities.getMaxAnisotropy();
-groundTexture.anisotropy = maxAnisotropy;
-groundTexture.wrapS = groundTexture.wrapT = THREE.RepeatWrapping;
-groundTexture.repeat.set( 1020, 512 );
-const geometry = new THREE.PlaneGeometry( 10, 10 );
-const material1 = new THREE.MeshPhongMaterial( { color: 0xffffff, map: groundTexture, transparent: true,} );
-
-groundMesh = new THREE.Mesh( geometry, material1 );
-groundMesh.rotation.x = - Math.PI / 2;
-groundMesh.scale.set( 1000, 1000, 1000 );
-groundMesh.position.y = -4;
-
-scene.add( groundMesh );
 scene.add( new THREE.AmbientLight( 0xeef0ff, 0.2) );
+
+// Załaduj teksturę chmury
+const cloudTexture = textureLoader.load('src/models/cloudd.png');
+cloudTexture.colorSpace = THREE.SRGBColorSpace;
+cloudTexture.anisotropy = renderer.capabilities.getMaxAnisotropy();
+cloudTexture.wrapS = cloudTexture.wrapT = THREE.RepeatWrapping;
+
+initClouds(scene, cloudTexture);
 
 // Ładowanie modelu samolotu
 loader.load( 'src/models/mig29c.glb', function ( gltf ) {
@@ -134,9 +126,9 @@ function initGame() {
       }
     });
 
-    groundTexture.offset.y += 0.01;
+     cloudTexture.offset.y += 0.01;
 
-    if (Math.random() < 0.005) {
+    if (Math.random() < 0.008) {
       mountains.push(createMountain(mountainModel,scene));
     }
     position = ( ( Date.now() - start_time ) * 0.03 ) % 8000;
