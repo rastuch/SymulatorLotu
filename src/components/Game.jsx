@@ -1,22 +1,25 @@
-import React, { useEffect } from 'react';
+// src/components/Game.jsx
+import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { WebGL } from 'three/examples/jsm/Addons.js';
-import initSky from './initSky.js';
-import jetControllers from './jetControllers.js';
-import createMountain from './createMountain.js';
-import initClouds from './initClouds.js';
+import initSky from '../initSky.js';
+import jetControllers from '../jetControllers.js';
+import createMountain from '../createMountain.js';
+import initClouds from '../initClouds.js';
 
-const Game = () => {
+const Game = ({ start }) => {
+  const containerRef = useRef(null);
+
   useEffect(() => {
-    let start_time = Date.now();
+    let start_time;
     let jet, position, mountainModel, sky, sun, mixer;
 
     if (WebGL.isWebGLAvailable()) {
       console.log('WebGL is available!');
     } else {
       const warning = WebGL.getWebGLErrorMessage();
-      document.getElementById('container').appendChild(warning);
+      containerRef.current.appendChild(warning);
       return;
     }
 
@@ -27,7 +30,7 @@ const Game = () => {
 
     const renderer = new THREE.WebGLRenderer();
     renderer.setSize(window.innerWidth, window.innerHeight);
-    document.body.appendChild(renderer.domElement);
+    containerRef.current.appendChild(renderer.domElement);
 
     const loader = new GLTFLoader();
     const textureLoader = new THREE.TextureLoader();
@@ -65,11 +68,14 @@ const Game = () => {
         mountainModel.scale.set(1, 1, 1);
 
         initSky(renderer, scene, camera, sky, sun);
-        initGame();
+        if (start) {
+          initGame();
+        }
       });
     });
 
     function initGame() {
+      start_time = Date.now();
       const mountains = [];
       let targetPosition = new THREE.Vector3();
       let targetQuaternion = new THREE.Quaternion();
@@ -120,15 +126,15 @@ const Game = () => {
     }
 
     return () => {
-      // Clean up on unmount
-      const canvas = document.querySelector('canvas');
-      if (canvas) {
-        document.body.removeChild(canvas);
+      if (containerRef.current) {
+        while (containerRef.current.firstChild) {
+          containerRef.current.removeChild(containerRef.current.firstChild);
+        }
       }
     };
-  }, []);
+  }, [start]);
 
-  return <div />;
+  return <div ref={containerRef} className="game-container" />;
 };
 
 export default Game;

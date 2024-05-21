@@ -1,4 +1,27 @@
-body {
-  height: 100vh;
-  margin: 0;
+/* src/styles.css or your CSS file */
+.game-container, .moving-map-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.menu {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.6); /* Semi-transparent background */
+  color: white;
+  z-index: 1; /* Foreground layer */
+}
+
+.menu button {
+  padding: 10px 20px;
+  font-size: 20px;
 }
