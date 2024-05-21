@@ -1,9 +1,8 @@
-// src/App.jsx
 import React, { useState } from 'react';
 import Menu from './components/Menu.jsx';
 import MovingMap from './components/MovingMap.jsx';
 import Game from './components/Game.jsx';
-import './style.css'; // Ensure this imports your CSS
+import './style.css';
 
 const App = () => {
   const [gameStarted, setGameStarted] = useState(false);

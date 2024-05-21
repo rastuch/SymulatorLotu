@@ -1,4 +1,3 @@
-// src/components/Menu.jsx
 import React from 'react';
 
 const Menu = ({ onStartGame }) => {

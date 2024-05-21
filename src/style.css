@@ -1,4 +1,3 @@
-/* src/styles.css or your CSS file */
 .game-container, .moving-map-container {
   position: absolute;
   top: 0;
@@ -14,11 +13,12 @@
   width: 100%;
   height: 100%;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: rgba(0, 0, 0, 0.6); /* Semi-transparent background */
+  background: rgba(0, 0, 0, 0.6);
   color: white;
-  z-index: 1; /* Foreground layer */
+  z-index: 1;
 }
 
 .menu button {
