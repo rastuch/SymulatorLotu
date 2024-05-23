@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
+import Game from './components/Game.jsx';
 import Menu from './components/Menu.jsx';
 import MovingMap from './components/MovingMap.jsx';
-import Game from './components/Game.jsx';
 import './style.css';
 
 const App = () => {
@@ -13,14 +13,11 @@ const App = () => {
 
   return (
     <div>
-      {gameStarted ? <Game start={true} /> : (
-        <>
-          <MovingMap />
-          <Menu onStartGame={handleStartGame} />
-        </>
-      )}
-    </div>
-  );
+      {gameStarted ? (<Game/>) : (<>
+        <MovingMap/>
+        <Menu onStartGame={handleStartGame}/>
+      </>)}
+    </div>);
 };
 
 export default App;

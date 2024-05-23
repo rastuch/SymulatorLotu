@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Menu = ({ onStartGame }) => {
+const Menu = ({onStartGame}) => {
   return (
     <div className="menu">
       <h1>Welcome to the Game</h1>
