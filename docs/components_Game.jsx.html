@@ -1,4 +1,32 @@
-import React, {useEffect, useRef, useState} from 'react';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/Game.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/Game.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, {useEffect, useRef, useState} from 'react';
 import * as THREE from 'three';
 import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader.js';
 import {WebGL} from 'three/examples/jsm/Addons.js';
@@ -65,7 +93,7 @@ const Game = ({handleStopGame}) => {
     } else {
       const table = JSON.parse(scoreTable);
       if(Array.isArray(table)){
-        if(table.length < 10){
+        if(table.length &lt; 10){
           return true;
         }
         return !table.every((row) => row?.score > score);
@@ -174,7 +202,7 @@ const Game = ({handleStopGame}) => {
 
       const dummy = new Object3D();
 
-      for (let i = 0; i < buildMesh.count; i++) {
+      for (let i = 0; i &lt; buildMesh.count; i++) {
         const scaleY = Math.random() * 7 + 0.5;
 
         dummy.position.x = Math.random() * 600 - 300;
@@ -231,7 +259,7 @@ const Game = ({handleStopGame}) => {
           jet.position.z = 0;
           jet.rotation.y = Math.PI;
 
-          if (gltf.animations && gltf.animations.length) {
+          if (gltf.animations &amp;&amp; gltf.animations.length) {
             mixer = new THREE.AnimationMixer(gltf.scene);
             gltf.animations.forEach((clip) => {
               mixer.clipAction(clip).play();
@@ -290,7 +318,7 @@ const Game = ({handleStopGame}) => {
           document.getElementById('myimg').style.visibility = 'visible';
           document.getElementById('speedvalue').style.visibility = 'hidden';
         }
-        if (jet && !gameOver) {
+        if (jet &amp;&amp; !gameOver) {
           jet.position.lerp(targetPosition, 0.1);
           jet.quaternion.slerp(targetQuaternion, 0.1);
           const delta = clock.getDelta();
@@ -315,7 +343,7 @@ const Game = ({handleStopGame}) => {
 
           const direction = new THREE.Vector3(0, 0, -1);
 
-          for (let i = 0; i < raycasters.length; i++) {
+          for (let i = 0; i &lt; raycasters.length; i++) {
             raycasters[i].set(raycastOrigins[i], direction.clone().applyQuaternion(jet.quaternion));
             const intersects = raycasters[i].intersectObjects(towers, true);
 
@@ -328,7 +356,7 @@ const Game = ({handleStopGame}) => {
             }
           }
 
-          if (collisionDetected && !gameOver) {
+          if (collisionDetected &amp;&amp; !gameOver) {
             gameOver = true;
             setStoped();
           }
@@ -347,10 +375,10 @@ const Game = ({handleStopGame}) => {
             cloudTexture.offset.y += 0.01 * speed;
           }
 
-          if (buildMesh && !gameOver) {
+          if (buildMesh &amp;&amp; !gameOver) {
             const speedBuildings = 0.2 * speed;
             const buildingsDummy = new Object3D();
-            for (let i = 0; i < buildMesh.count; i++) {
+            for (let i = 0; i &lt; buildMesh.count; i++) {
               buildMesh.getMatrixAt(i, buildingsDummy.matrix);
               buildingsDummy.matrix.decompose(buildingsDummy.position, buildingsDummy.quaternion, buildingsDummy.scale);
               buildingsDummy.position.z += speedBuildings;
@@ -363,7 +391,7 @@ const Game = ({handleStopGame}) => {
             buildMesh.instanceMatrix.needsUpdate = true;
           }
           if(!gameOver) {
-            if (Math.random() < 0.005) {
+            if (Math.random() &lt; 0.005) {
               const towerModels = [tower1, tower2, tower3];
               const newTower = createTower(towerModels[Math.floor(Math.random() * 3)], scene);
               towers.push(newTower);
@@ -391,36 +419,59 @@ const Game = ({handleStopGame}) => {
   }, []);
 
   return (
-      <>
-        <div id="game-container" className="game-container">
+      &lt;>
+        &lt;div id="game-container" className="game-container">
           {/* This div will contain the Three.js canvas */}
-        </div>
-        <div id="speedvalue" className="collision-counter font-verdana">
+        &lt;/div>
+        &lt;div id="speedvalue" className="collision-counter font-verdana">
           Speed: {userSpeed} KM/H
-        </div>
-        <img src={logo} style={styles.gameLogo}/>
-        <div id="myimg" style={styles.containerStyle}>
-          <img src={goImg} style={styles.imageStyle}/>
-          <div className="font-verdana" style={styles.yourScoreValue}>
+        &lt;/div>
+        &lt;img src={logo} style={styles.gameLogo}/>
+        &lt;div id="myimg" style={styles.containerStyle}>
+          &lt;img src={goImg} style={styles.imageStyle}/>
+          &lt;div className="font-verdana" style={styles.yourScoreValue}>
             YOUR SCORE: {score} KM/H
-            {checkScoreShouldBeRegister &&
-                <div style={styles.youAreInTop}>YOU ARE IN TOP 10!</div>}
-          </div>
-          {checkScoreShouldBeRegister &&
-              <div style={styles.inputNameContainer}>
-                <div style={styles.inputNameContent}>
-                  <div style={styles.inputNameTitle}>TAPE YOUR NAME</div>
-                  <input style={styles.inputNameStyle}
+            {checkScoreShouldBeRegister &amp;&amp;
+                &lt;div style={styles.youAreInTop}>YOU ARE IN TOP 10!&lt;/div>}
+          &lt;/div>
+          {checkScoreShouldBeRegister &amp;&amp;
+              &lt;div style={styles.inputNameContainer}>
+                &lt;div style={styles.inputNameContent}>
+                  &lt;div style={styles.inputNameTitle}>TAPE YOUR NAME&lt;/div>
+                  &lt;input style={styles.inputNameStyle}
                          value={playerName}
                          className="font-verdana"
                          onChange={e => setPlayerName(e.target.value)}/>
-                </div>
-              </div>
+                &lt;/div>
+              &lt;/div>
           }
-          <ButtonFly text="NEXT" onClick={onPressNext}/>
-        </div>
-      </>
+          &lt;ButtonFly text="NEXT" onClick={onPressNext}/>
+        &lt;/div>
+      &lt;/>
   );
 };
 
 export default Game;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#App">App</a></li><li><a href="global.html#Game">Game</a></li><li><a href="global.html#Menu">Menu</a></li><li><a href="global.html#MovingMap">MovingMap</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Tue Jun 11 2024 21:21:58 GMT+0200 (Central European Summer Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
