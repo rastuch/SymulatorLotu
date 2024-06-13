@@ -1,3 +1,13 @@
+/**
+ * Component representing the game.
+ *
+ * @component
+ * @param {Object} props - Component props.
+ * @param {string} props.text - Text in the button.
+ * @param {Function} props.onClick - Function called after press button.
+ * @param {string} props.className - class name for the HTML component.
+ * @returns {JSX.Element} The game component.
+ */
 const ButtonFly = ({text, onClick, className}) => {
     return (
         <button className={`btn ${className}`} onClick={onClick}>

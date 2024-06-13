@@ -3,10 +3,12 @@ import * as THREE from "three";
 /**
  * Controls the jet's movement and rotation based on keyboard input.
  *
+ * @function jetControllers
  * @param {THREE.Object3D} jet - The jet object to control.
  * @param {THREE.Vector3} targetPosition - The target position of the jet.
  * @param {THREE.Quaternion} targetQuaternion - The target quaternion for the jet's rotation.
  * @param {boolean} gameOver - The game over state.
+ * @returns {void}
  */
 export default function jetControllers(jet, targetPosition, targetQuaternion, gameOver) {
     const jetMaxMove = 8;

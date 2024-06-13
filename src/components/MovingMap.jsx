@@ -2,8 +2,8 @@ import React, {useEffect, useRef} from 'react';
 import * as THREE from 'three';
 import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader.js';
 import {WebGL} from 'three/examples/jsm/Addons.js';
-import initSky from '../initSky.js';
-import initClouds from '../initClouds.js';
+import initSky from '../tools/initSky.js';
+import initClouds from '../tools/initClouds.js';
 
 /**
  * MovingMap component that initializes and renders a 3D moving map using Three.js.

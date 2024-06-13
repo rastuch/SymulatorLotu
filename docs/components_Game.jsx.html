@@ -30,36 +30,16 @@
 import * as THREE from 'three';
 import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader.js';
 import {WebGL} from 'three/examples/jsm/Addons.js';
-import initSky from '../initSky.js';
-import jetControllers from '../jetControllers.js';
-import createTower from '../createTower.js';
-import initClouds from '../initClouds.js';
+import initSky from '../tools/initSky.js';
+import jetControllers from '../tools/jetControllers.js';
+import createTower from '../tools/createTower.js';
+import initClouds from '../tools/initClouds.js';
 import {BoxGeometry, InstancedMesh, MeshPhongMaterial, Object3D, Vector3} from 'three';
 import goImg from '../models/gameover.png'
 import ButtonFly from "./ButtonFly.jsx";
 import logo from "../models/symulatorLogo.png";
 import styles from "./styles.js";
 
-const containerStyle = {
-  visibility: 'hidden',
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: '100vw',
-  height: '100vh',
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  flexDirection: 'column',
-  fontFamily: "Verdana"
-};
-
-const imageStyle = {
-  width: '50%',
-  height: '50%',
-  objectFit: 'contain'
-};
 
 /**
  * Component representing the game.
@@ -103,6 +83,13 @@ const Game = ({handleStopGame}) => {
     }
   }, [score]);
 
+  /**
+   * Button NEXT function
+   * @function onPressNext
+   *
+   * @returns {void}
+   */
+
   const onPressNext = () => {
     if(checkScoreShouldBeRegister){
       // SAVE SCORE AND BACK TO MENU
@@ -127,6 +114,12 @@ const Game = ({handleStopGame}) => {
     }
   };
 
+  /**
+   * Initialize the game.
+   *
+   * @function initializeGame
+   * @returns {void}.
+   */
   const initializeGame = () => {
     const setStoped = () => {
       gameStoped.current = true;
@@ -141,12 +134,13 @@ const Game = ({handleStopGame}) => {
     }
 
     let jet, sky, sun, mixer, buildMesh, gameOver, tower2, tower3, tower1;
-    let speed = 1;
+    let speed = 2;
 
     const scene = new THREE.Scene();
 
     /**
      * Initialize the camera.
+     * @function initCamera
      * @returns {THREE.PerspectiveCamera} The initialized camera.
      */
     const initCamera = () => {
@@ -167,7 +161,9 @@ const Game = ({handleStopGame}) => {
 
     /**
      * Add lights to the scene.
+     * @function addLightsToScene
      * @param {THREE.Scene} scene - The scene to add lights to.
+     * @returns {void}
      */
     const addLightsToScene = (scene) => {
       const light = new THREE.DirectionalLight(0xffffff, 10.0);
@@ -180,6 +176,7 @@ const Game = ({handleStopGame}) => {
 
     /**
      * Load and set the cloud texture.
+     * @function loadAndSetCloudTexture
      * @returns {THREE.Texture} The loaded cloud texture.
      */
     const loadAndSetCloudTexture = () => {
@@ -192,7 +189,9 @@ const Game = ({handleStopGame}) => {
 
     /**
      * Create buildings in the scene.
+     * @function createBuildings
      * @param {THREE.Scene} scene - The scene to add buildings to.
+     * @returns {void}
      */
     function createBuildings(scene) {
       const buildGeometry = new BoxGeometry(1, 1, 1);
@@ -222,11 +221,12 @@ const Game = ({handleStopGame}) => {
 
     /**
      * Create raycasters and add them to the scene.
+     * @function createRaycasters
      * @param {THREE.Scene} scene - The scene to add raycasters to.
      * @returns {Object} An object containing the raycasters and arrow helpers.
      */
     const createRaycasters = (scene) => {
-      const rayLength = 0.2;
+      const rayLength = 1;
       const raycasters = [
         new THREE.Raycaster(undefined, undefined, 0, rayLength),
         new THREE.Raycaster(undefined, undefined, 0, rayLength),
@@ -290,6 +290,7 @@ const Game = ({handleStopGame}) => {
 
     /**
      * Initialize the game.
+     * @function initGame
      */
     function initGame() {
       const towers = [];
@@ -364,7 +365,7 @@ const Game = ({handleStopGame}) => {
           if(!gameOver) {
             towers.forEach((mountain, index) => {
               mountain.position.z += 0.2 * speed;
-              if (mountain.position.z > -1) {
+              if (mountain.position.z > 0.5) {
                 scene.remove(mountain);
                 towers.splice(index, 1);
               }
@@ -462,13 +463,13 @@ export default Game;
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#App">App</a></li><li><a href="global.html#Game">Game</a></li><li><a href="global.html#Menu">Menu</a></li><li><a href="global.html#MovingMap">MovingMap</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#App">App</a></li><li><a href="global.html#ButtonFly">ButtonFly</a></li><li><a href="global.html#Game">Game</a></li><li><a href="global.html#Menu">Menu</a></li><li><a href="global.html#MovingMap">MovingMap</a></li><li><a href="global.html#addLightsToScene">addLightsToScene</a></li><li><a href="global.html#createBuildings">createBuildings</a></li><li><a href="global.html#createRaycasters">createRaycasters</a></li><li><a href="global.html#createTower">createTower</a></li><li><a href="global.html#formatDate">formatDate</a></li><li><a href="global.html#initCamera">initCamera</a></li><li><a href="global.html#initClouds">initClouds</a></li><li><a href="global.html#initGame">initGame</a></li><li><a href="global.html#initSky">initSky</a></li><li><a href="global.html#initializeGame">initializeGame</a></li><li><a href="global.html#jetControllers">jetControllers</a></li><li><a href="global.html#loadAndSetCloudTexture">loadAndSetCloudTexture</a></li><li><a href="global.html#onPressNext">onPressNext</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Tue Jun 11 2024 21:21:58 GMT+0200 (Central European Summer Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Thu Jun 13 2024 14:19:08 GMT+0200 (Central European Summer Time)
 </footer>
 
 <script> prettyPrint(); </script>

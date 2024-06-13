@@ -1,11 +1,13 @@
 import * as THREE from "three";
-import {cloudsValues2 as cloudsValues} from "./models/cloudsValues.js";
+import {cloudsValues2 as cloudsValues} from "../models/cloudsValues.js";
 
 /**
  * Initializes and adds clouds to the scene.
  *
+ * @function initClouds
  * @param {THREE.Scene} scene - The scene to add the clouds to.
  * @param {THREE.Texture} cloudTexture - The texture to apply to the clouds.
+ * @returns {void}
  */
 export default function initClouds(scene, cloudTexture) {
     const cloudGeometry = new THREE.PlaneGeometry(256, 256);

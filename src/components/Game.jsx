@@ -2,36 +2,16 @@ import React, {useEffect, useRef, useState} from 'react';
 import * as THREE from 'three';
 import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader.js';
 import {WebGL} from 'three/examples/jsm/Addons.js';
-import initSky from '../initSky.js';
-import jetControllers from '../jetControllers.js';
-import createTower from '../createTower.js';
-import initClouds from '../initClouds.js';
+import initSky from '../tools/initSky.js';
+import jetControllers from '../tools/jetControllers.js';
+import createTower from '../tools/createTower.js';
+import initClouds from '../tools/initClouds.js';
 import {BoxGeometry, InstancedMesh, MeshPhongMaterial, Object3D, Vector3} from 'three';
 import goImg from '../models/gameover.png'
 import ButtonFly from "./ButtonFly.jsx";
 import logo from "../models/symulatorLogo.png";
 import styles from "./styles.js";
 
-const containerStyle = {
-  visibility: 'hidden',
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: '100vw',
-  height: '100vh',
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  flexDirection: 'column',
-  fontFamily: "Verdana"
-};
-
-const imageStyle = {
-  width: '50%',
-  height: '50%',
-  objectFit: 'contain'
-};
 
 /**
  * Component representing the game.
@@ -75,6 +55,13 @@ const Game = ({handleStopGame}) => {
     }
   }, [score]);
 
+  /**
+   * Button NEXT function
+   * @function onPressNext
+   *
+   * @returns {void}
+   */
+
   const onPressNext = () => {
     if(checkScoreShouldBeRegister){
       // SAVE SCORE AND BACK TO MENU
@@ -99,6 +86,12 @@ const Game = ({handleStopGame}) => {
     }
   };
 
+  /**
+   * Initialize the game.
+   *
+   * @function initializeGame
+   * @returns {void}.
+   */
   const initializeGame = () => {
     const setStoped = () => {
       gameStoped.current = true;
@@ -113,12 +106,14 @@ const Game = ({handleStopGame}) => {
     }
 
     let jet, sky, sun, mixer, buildMesh, gameOver, tower2, tower3, tower1;
-    let speed = 1;
+    let speed = 2;
+    let isDebug = false;
 
     const scene = new THREE.Scene();
 
     /**
      * Initialize the camera.
+     * @function initCamera
      * @returns {THREE.PerspectiveCamera} The initialized camera.
      */
     const initCamera = () => {
@@ -139,7 +134,9 @@ const Game = ({handleStopGame}) => {
 
     /**
      * Add lights to the scene.
+     * @function addLightsToScene
      * @param {THREE.Scene} scene - The scene to add lights to.
+     * @returns {void}
      */
     const addLightsToScene = (scene) => {
       const light = new THREE.DirectionalLight(0xffffff, 10.0);
@@ -152,6 +149,7 @@ const Game = ({handleStopGame}) => {
 
     /**
      * Load and set the cloud texture.
+     * @function loadAndSetCloudTexture
      * @returns {THREE.Texture} The loaded cloud texture.
      */
     const loadAndSetCloudTexture = () => {
@@ -164,7 +162,9 @@ const Game = ({handleStopGame}) => {
 
     /**
      * Create buildings in the scene.
+     * @function createBuildings
      * @param {THREE.Scene} scene - The scene to add buildings to.
+     * @returns {void}
      */
     function createBuildings(scene) {
       const buildGeometry = new BoxGeometry(1, 1, 1);
@@ -194,11 +194,12 @@ const Game = ({handleStopGame}) => {
 
     /**
      * Create raycasters and add them to the scene.
+     * @function createRaycasters
      * @param {THREE.Scene} scene - The scene to add raycasters to.
      * @returns {Object} An object containing the raycasters and arrow helpers.
      */
     const createRaycasters = (scene) => {
-      const rayLength = 0.2;
+      const rayLength = 1;
       const raycasters = [
         new THREE.Raycaster(undefined, undefined, 0, rayLength),
         new THREE.Raycaster(undefined, undefined, 0, rayLength),
@@ -209,8 +210,9 @@ const Game = ({handleStopGame}) => {
         new THREE.ArrowHelper(new THREE.Vector3(0, 0, -1), new THREE.Vector3(), rayLength, 0x00ff00),
         new THREE.ArrowHelper(new THREE.Vector3(0, 0, -1), new THREE.Vector3(), rayLength, 0x0000ff)
       ];
-
-      arrowHelpers.forEach(helper => scene.add(helper));
+      if(isDebug) {
+        arrowHelpers.forEach(helper => scene.add(helper));
+      }
       return {raycasters, arrowHelpers};
     };
 
@@ -262,6 +264,7 @@ const Game = ({handleStopGame}) => {
 
     /**
      * Initialize the game.
+     * @function initGame
      */
     function initGame() {
       const towers = [];
@@ -319,8 +322,10 @@ const Game = ({handleStopGame}) => {
             raycasters[i].set(raycastOrigins[i], direction.clone().applyQuaternion(jet.quaternion));
             const intersects = raycasters[i].intersectObjects(towers, true);
 
-            arrowHelpers[i].position.copy(raycastOrigins[i]);
-            arrowHelpers[i].setDirection(direction.clone().applyQuaternion(jet.quaternion));
+            if(isDebug) {
+              arrowHelpers[i].position.copy(raycastOrigins[i]);
+              arrowHelpers[i].setDirection(direction.clone().applyQuaternion(jet.quaternion));
+            }
 
             if (intersects.length > 0) {
               collisionDetected = true;
@@ -336,7 +341,7 @@ const Game = ({handleStopGame}) => {
           if(!gameOver) {
             towers.forEach((mountain, index) => {
               mountain.position.z += 0.2 * speed;
-              if (mountain.position.z > -1) {
+              if (mountain.position.z > 0.5) {
                 scene.remove(mountain);
                 towers.splice(index, 1);
               }
@@ -363,7 +368,7 @@ const Game = ({handleStopGame}) => {
             buildMesh.instanceMatrix.needsUpdate = true;
           }
           if(!gameOver) {
-            if (Math.random() < 0.005) {
+            if (Math.random() < 0.007) {
               const towerModels = [tower1, tower2, tower3];
               const newTower = createTower(towerModels[Math.floor(Math.random() * 3)], scene);
               towers.push(newTower);

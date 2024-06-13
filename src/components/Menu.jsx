@@ -42,7 +42,7 @@ const Menu = ({onStartGame, handlePlayMusic}) => {
     /**
      * Formats a timestamp into a readable date and time string.
      *
-     * @function
+     * @function formatDate
      * @param {number} timestamp - The timestamp to format.
      * @returns {string} The formatted date and time string.
      */
